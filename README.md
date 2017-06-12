@@ -5,6 +5,9 @@
 
 Just another Tic Tac Toe game...
 
+## Deployed
+
+https://tic-tac-toe-310fa.firebaseapp.com/
 
 ## Install the Polymer-CLI
 
