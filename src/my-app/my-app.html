@@ -8,24 +8,24 @@
         display: block;
         text-align: center;
         background-color: lightpink;
-        height: 100%;
+        min-height: 90vh;
         width: 100vw;
         padding-top: 50px;
       }
 
       .gameGridContainer {
         display: flex;
-        width: 75vw;
+        width: 79vw;
         flex-wrap: wrap;
         padding: 10vw;
       }
 
       .gameGrid {
-        width: 24vw;
+        width: 23vw;
         background-color: lightblue;
         border: black solid 2px;
         height: 12vw;
-        padding-top: 11vw;
+        padding-top: 9vw;
       }
 
 
@@ -93,6 +93,18 @@
         console.log(grid, letter)
         var isGameOver = this.checkGameOver();
         if(isGameOver === false){
+
+          var isDraw = true;
+
+          for(var i = 1; i <= 9; i++) {
+            if(this['grid' + i] === '') isDraw = false;
+          }
+
+          if(isDraw) {
+            this.gameStarted = false;
+            this.playerTurn = 'Draw!';
+          }
+
           return;
         } else {
           this.gameStarted = false;
