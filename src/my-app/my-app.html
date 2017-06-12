@@ -1,0 +1,144 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        text-align: center;
+      }
+
+      .gameGridContainer {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        padding: 10vw;
+      }
+
+      .gameGrid {
+        width: 26vw;
+        background-color: lightblue;
+        border: black solid 2px;
+        height: 13vw;
+        padding-top: 11vw;
+      }
+
+
+    </style>
+
+    <h2>Tic Tac Toe</h2>
+
+    <h2 id="turn"> {{playerTurn}} </h2>
+
+    <button on-tap="startGame" hidden={{gameStarted}}> Start the Game </button>
+
+    <div class="gameGridContainer">
+
+      <div id="grid1" class="gameGrid" on-tap="handleTap" data-args="1"> {{grid1}}
+      </div>
+      <div id="grid2" class="gameGrid" on-tap="handleTap" data-args="2"> {{grid2}}
+      </div>
+      <div id="grid3" class="gameGrid" on-tap="handleTap" data-args="3"> {{grid3}}
+      </div>
+
+      <div id="grid4" class="gameGrid" on-tap="handleTap" data-args="4"> {{grid4}}
+      </div>
+      <div id="grid5" class="gameGrid" on-tap="handleTap" data-args="5"> {{grid5}}
+      </div>
+      <div id="grid6" class="gameGrid" on-tap="handleTap" data-args="6"> {{grid6}}
+      </div>
+
+      <div id="grid7" class="gameGrid" on-tap="handleTap" data-args="7"> {{grid7}}
+      </div>
+      <div id="grid8" class="gameGrid" on-tap="handleTap" data-args="8"> {{grid8}}
+      </div>
+      <div id="grid9" class="gameGrid" on-tap="handleTap" data-args="9"> {{grid9}}
+      </div>
+
+    </div>
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'my-app',
+
+      props: {
+        playerTurn: String,
+        gameStarted: false,
+      },
+
+      created: function() {
+        this.playerTurn = "Start the Game...";
+      },
+
+      handleTap: function(e) {
+        var grid = e.target.dataset.args;
+
+        if(!this.gameStarted) return;
+        var letter = this.playerTurn === 'Player 1' ? 'X' : 'O';
+
+        if(this['grid' + grid] === 'X' || this['grid' + grid] === 'O') return;
+
+        this['grid' + grid] = letter;
+        this.togglePlayer();
+
+        console.log(grid, letter)
+        var isGameOver = this.checkGameOver();
+        if(isGameOver === false){
+          return;
+        } else {
+          this.gameStarted = false;
+          this.playerTurn = isGameOver === 'X' ? 'Player 1 has won!' : 'Player 2 has won!';
+        }
+
+      },
+
+      startGame: function() {
+        console.log('Starting Game...');
+        this.gameStarted = true;
+        this.playerTurn = 'Player 1';
+
+        for(var i = 1; i <= 9; i++) {
+          this['grid' + i] = '';
+        }
+      },
+
+      togglePlayer: function() {
+        if(this.playerTurn === 'Player 1') {
+          this.playerTurn = 'Player 2';
+        } else {
+          this.playerTurn = 'Player 1';
+        }
+      },
+
+      checkGameOver: function() {
+        if(this.checkGameOverPlayer('X')) return 'X';
+        if(this.checkGameOverPlayer('O')) return 'O';
+        return false;
+      },
+
+      checkGameOverPlayer: function(char) {
+        if(this.grid1 === char && this.grid2 === char && this.grid3 === char) return true;
+        if(this.grid4 === char && this.grid5 === char && this.grid6 === char) return true;
+        if(this.grid7 === char && this.grid8 === char && this.grid9 === char) return true;
+
+        if(this.grid1 === char && this.grid4 === char && this.grid7 === char) return true;
+        if(this.grid2 === char && this.grid5 === char && this.grid8 === char) return true;
+        if(this.grid3 === char && this.grid6 === char && this.grid9 === char) return true;
+
+        if(this.grid1 === char && this.grid5 === char && this.grid9 === char) return true;
+        if(this.grid3 === char && this.grid5 === char && this.grid7 === char) return true;
+
+        return false;
+      }
+
+
+
+    });
+
+  </script>
+</dom-module>
